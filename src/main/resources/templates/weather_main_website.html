@@ -21,27 +21,68 @@
 <body>
     <div class="container">
         <br>
-        <h1 class="text-center text-bold fs-1">WEATHER REPORT</h1>
+        <h1 class="text-center text-bold text-black badge bg-light fs-1">RUDA ŚLĄSKA - WEATHER REPORT</h1>
         <br>
     </div>
 
     <div class="container">
         <table class="table">
             <thead class="table-primary text-center fs-3 fw-bold">
-            <tr>
-                <th th:each="time : ${todayWeatherDataMap.keySet()}" th:text="${time}"></th>
-            </tr>
+                <tr>
+                    <th th:each="time : ${todayWeatherDataMap1.keySet()}" th:text="${time}"></th>
+                </tr>
             </thead>
 
             <tbody>
-            <tr>
-                <td class="text-center"
-                    th:each="entry : ${todayWeatherDataMap.entrySet()}">
-                    <span class="fs-3 fw-bold" th:each="value : ${entry.value}" th:text="${value.temperature}"></span><br>
-                    <span class="fs-5" th:each="value : ${entry.value}" th:text="${value.summary}"></span>
-                </td>
+                <tr>
+                    <td class="text-center"
+                        th:each="entry : ${todayWeatherDataMap1.entrySet()}">
+                        <span class="fs-3 fw-bold" th:each="value : ${entry.value}" th:text="${value.temperature}"></span><br>
+                        <span class="fs-5" th:each="value : ${entry.value}" th:text="${value.summary}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
 
-            </tr>
+    <div class="container">
+        <table class="table">
+            <thead class="table-primary text-center fs-3 fw-bold">
+                <tr>
+                    <th th:each="time : ${todayWeatherDataMap2.keySet()}" th:text="${time}"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td class="text-center"
+                        th:each="entry : ${todayWeatherDataMap2.entrySet()}">
+                        <span class="fs-3 fw-bold" th:each="value : ${entry.value}" th:text="${value.temperature}"></span><br>
+                        <span class="fs-5" th:each="value : ${entry.value}" th:text="${value.summary}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="container">
+        <table class="table">
+            <thead class="table-primary text-center fs-3 fw-bold">
+                <tr>
+                    <th th:each="time : ${todayWeatherDataMap3.keySet()}" th:text="${time}"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td class="text-center"
+                        th:each="entry : ${todayWeatherDataMap3.entrySet()}">
+                        <span class="fs-3 fw-bold" th:each="value : ${entry.value}" th:text="${value.temperature}"></span><br>
+                        <span class="fs-5" th:each="value : ${entry.value}" th:text="${value.summary}"></span>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -60,7 +101,6 @@
 
             <tbody>
                 <tr th:each="i : ${#numbers.sequence(0, 23)}">
-
                     <td class="text-center fs-5 fw-bold bg-primary-subtle">
                         <span th:text="${hoursList[i]}"></span>
                     </td>
@@ -70,7 +110,6 @@
                         <span class="text-black badge bg-light fs-5 fw-bold " th:if="${i < entry.value.size()}" th:text="${entry.value[i].temperature}"></span><br>
                         <span class="text-black badge bg-light fs-6" th:if="${i < entry.value.size()}" th:text="${entry.value[i].summary}"></span>
                     </td>
-
                 </tr>
             </tbody>
         </table>

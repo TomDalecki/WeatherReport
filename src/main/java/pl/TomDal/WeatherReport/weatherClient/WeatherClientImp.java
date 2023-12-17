@@ -35,11 +35,7 @@ public class WeatherClientImp implements WeatherDto {
             }
 
             System.out.println();
-            System.out.println("--- DRUKUJĘ DANE Z SERWERA---");
-            for (int i = 0; i < weatherDataList.size(); i++) {
-                System.out.println(i + " " + weatherDataList.get(i));
-            }
-
+            System.out.println("--- POBIERAM DANE Z SERWERA---");
             return weatherDataList;
 
         } catch (Exception e) {

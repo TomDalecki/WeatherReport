@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WeatherDataService {
     private final WeatherDataDAO weatherDataDAO;
+    public static final int REFRESH_PERIOD_IN_HOURS = 3;
 
     public void save(List<WeatherData> weatherData) {
         for (WeatherData weatherDatum : weatherData) {
@@ -31,17 +32,48 @@ public class WeatherDataService {
     }
 
     public boolean dataValidCheck(WeatherData weatherData) {
-        return weatherData.getDate().plusHours(4).isBefore(LocalDateTime.now());
+        return weatherData.getDate().plusHours(REFRESH_PERIOD_IN_HOURS).isBefore(LocalDateTime.now());
     }
 
     public void clearData() {
         weatherDataDAO.clearData();
     }
 
-    public Map<LocalTime, List<WeatherData>> prepareThisDayDataForView(List<WeatherData> weatherDataList) {
+    public Map<LocalTime, List<WeatherData>> prepareThisDayDataFrom0AmTill7AmForView(List<WeatherData> weatherDataList) {
 
         return weatherDataList.stream()
                 .filter(data -> data.getDate().toLocalDate().equals(LocalDate.now()))
+                .filter(data -> data.getDate().toLocalTime().isBefore(LocalTime.of(8, 0, 0)))
+                .collect(Collectors.toMap(
+                        data -> data.getDate().toLocalTime(),
+                        data -> new ArrayList<>(Collections.singletonList(data)),
+                        (previous, next) -> {
+                            previous.addAll(next);
+                            return previous;
+                        },
+                        TreeMap::new));
+    }
+    public Map<LocalTime, List<WeatherData>> prepareThisDayDataFrom8AmTill3PmForView(List<WeatherData> weatherDataList) {
+
+        return weatherDataList.stream()
+                .filter(data -> data.getDate().toLocalDate().equals(LocalDate.now()))
+                .filter(data -> data.getDate().toLocalTime().isAfter(LocalTime.of(7, 0, 0)))
+                .filter(data -> data.getDate().toLocalTime().isBefore(LocalTime.of(16, 0, 0)))
+                .collect(Collectors.toMap(
+                        data -> data.getDate().toLocalTime(),
+                        data -> new ArrayList<>(Collections.singletonList(data)),
+                        (previous, next) -> {
+                            previous.addAll(next);
+                            return previous;
+                        },
+                        TreeMap::new));
+    }
+    public Map<LocalTime, List<WeatherData>> prepareThisDayDataFrom4PmTill11PmForView(List<WeatherData> weatherDataList) {
+
+        return weatherDataList.stream()
+                .filter(data -> data.getDate().toLocalDate().equals(LocalDate.now()))
+                .filter(data -> data.getDate().toLocalTime().isAfter(LocalTime.of(15, 0, 0)))
+                .filter(data -> data.getDate().toLocalTime().isBefore(LocalTime.of(23, 59, 0)))
                 .collect(Collectors.toMap(
                         data -> data.getDate().toLocalTime(),
                         data -> new ArrayList<>(Collections.singletonList(data)),
